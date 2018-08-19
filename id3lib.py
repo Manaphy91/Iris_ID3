@@ -150,7 +150,7 @@ def get_best_mean_point(entropy, att_res_lst):
     
     return max(attr_gain_lst, key=operator.itemgetter(1))
 
-def id3(matrix, result):
+def id3(matrix, result, attr_lst):
     # check if all outcomes are equal, if this is the case set this as Node
     # value and return
     if len(set(result)) == 1:
@@ -174,8 +174,8 @@ def id3(matrix, result):
             best_point = max(attr, key=operator.itemgetter(2))
 
             root = tree.Node(lambda x: x[best_point[0]] < best_point[1], [])
-            root._value.__doc__ = "x[{}] < {}".format(best_point[0], \
-                best_point[1])
+            root.set_treshold_name(attr_lst[best_point[0]])
+            root.set_treshold_value(best_point[1])
             
             j = best_point[0]
             left_mat, left_res = [], []
@@ -194,9 +194,9 @@ def id3(matrix, result):
             else:
                 split_ok = True
 
-        left = id3(matrix[left_mat], left_res)
+        left = id3(matrix[left_mat], left_res, attr_lst)
 
-        right = id3(matrix[right_mat], right_res)
+        right = id3(matrix[right_mat], right_res, attr_lst)
 
         root.set_sons([left, right])
 
