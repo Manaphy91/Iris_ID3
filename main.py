@@ -9,7 +9,7 @@ ATTRIBUTES = ('Sepal length', 'Sepal width', 'Petal length', 'Petal width')
 
 dataset = id3.read_dataset_from_csv("iris.data")
 
-RESULTS = tuple(id3.get_results(dataset))
+RESULTS = tuple(set(id3.get_results(dataset)))
 
 training, test = id3.shuffle_and_split_dataset(dataset)
 
