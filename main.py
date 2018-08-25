@@ -3,10 +3,13 @@
 import id3lib as id3
 import numpy as np
 import graph as gv
+import performances as perf
 
-ATTRIBUTES = ['Sepal length', 'Sepal width', 'Petal length', 'Petal width']
+ATTRIBUTES = ('Sepal length', 'Sepal width', 'Petal length', 'Petal width')
 
 dataset = id3.read_dataset_from_csv("iris.data")
+
+RESULTS = tuple(set(id3.get_results(dataset)))
 
 training, test = id3.shuffle_and_split_dataset(dataset)
 
@@ -25,3 +28,7 @@ for i in range(te_mat.shape[0]):
     print("Inferred class: {} expected class: {}".format(res, te_res[i]))
 
 graph = gv.create_graph(tree, 'ID3 Decision Tree')
+
+conf_mat = perf.calculate_confusion_matrix(tree, te_mat, te_res, RESULTS)
+
+print("accuracy: {}".format(perf.get_accuracy(conf_mat)))

@@ -145,8 +145,9 @@ def get_best_mean_point(entropy, att_res_lst):
             lst.append(functools.reduce(accumulate, res_lst, {}))
             res_lst = list(map(lambda x: x[1:], dst[i + 1:]))
             lst.append(functools.reduce(accumulate, res_lst, {}))
-            attr_gain_lst.append([dst[i][0], get_information_gain(entropy, \
-                len(att_res_lst), lst)])
+            info_gain = get_information_gain(entropy, len(att_res_lst), lst)
+            attr_gain_lst.append([round(dst[i][0], 3),
+                numpy.around(info_gain.astype(numpy.double), decimals=3)])
     
     return max(attr_gain_lst, key=operator.itemgetter(1))
 
