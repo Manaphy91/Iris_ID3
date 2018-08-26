@@ -152,15 +152,15 @@ def get_best_mean_point(entropy, att_res_lst):
     return max(attr_gain_lst, key=operator.itemgetter(1))
 
 def id3(matrix, result, attr_lst):
+    results = functools.reduce(take_count, result, {})
     # check if all outcomes are equal, if this is the case set this as Node
     # value and return
     if len(set(result)) == 1:
-        return tree.Node(set(result).pop(), [])
+        return tree.Node(set(result).pop(), [], stats=results)
     # check if at least one column is present in the matrix, if this is not
     # the case it means that the value for the node to return have to be set
     # to the most likely one
     else:
-        results = functools.reduce(take_count, result, {})
         entropy = get_entropy([v for _, v in results.items()])
         attr = []
         for j in range(matrix.shape[1]):
@@ -177,6 +177,7 @@ def id3(matrix, result, attr_lst):
             root = tree.Node(lambda x: x[best_point[0]] < best_point[1], [])
             root.set_treshold_name(attr_lst[best_point[0]])
             root.set_treshold_value(best_point[1])
+            root.set_stats(results)
             
             j = best_point[0]
             left_mat, left_res = [], []
@@ -196,8 +197,10 @@ def id3(matrix, result, attr_lst):
                 split_ok = True
 
         left = id3(matrix[left_mat], left_res, attr_lst)
+        left.set_parent(root)
 
         right = id3(matrix[right_mat], right_res, attr_lst)
+        right.set_parent(root)
 
         root.set_sons([left, right])
 
