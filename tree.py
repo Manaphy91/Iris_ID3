@@ -1,18 +1,23 @@
 class Node:
     
-    def __init__(self, value, sons, prob=100.0, treshold_name=None, \
-        treshold_value =None):
+    def __init__(self, value, sons, parent=None, prob=100.0, \
+        treshold_name=None, treshold_value=None, stats={}):
         self.__value = value
         self.__sons = sons
+        self.__parent = parent
         self.__prob = prob
         self.__treshold_name = treshold_name
         self.__treshold_value = treshold_value
+        self.__stats = stats
 
     def set_value(self, value):
         self.__value = value
 
     def set_sons(self, sons):
         self.__sons = sons
+
+    def set_parent(self, parent):
+        self.__parent = parent
 
     def set_prob(self, prob):
         self.__prob = prob
@@ -23,11 +28,17 @@ class Node:
     def set_treshold_value(self, value):
         self.__treshold_value = value
 
+    def set_stats(self, stats):
+        self.__stats = stats
+
     def get_value(self):
         return self.__value
 
     def get_sons(self):
         return self.__sons
+
+    def get_parent(self):
+        return self.__parent
 
     def get_prob(self):
         return self.__prob
@@ -38,6 +49,9 @@ class Node:
     def get_treshold_value(self):
         return self.__treshold_value
 
+    def get_stats(self):
+        return self.__stats
+
     def __str__(self):
         str = ""
         if callable(self._value):
@@ -47,6 +61,7 @@ class Node:
                 str += "lambda function"
         else:
             str += self.__value
-        return "[value: {}, sons: {}, prob: {}, treshold_name: {}, \
-            treshold_value: {}]".format(str, self.__sons, self.__prob, \
-            self.__treshold_name, self.__treshold_name)
+        return "[value: {}, sons: {}, parent: {}, prob: {}, \
+            treshold_name: {}, treshold_value: {}, stats: {}]".format(str, \
+            self.__sons, self.__prob, self.__treshold_name, self.__stats, \
+            self.__treshold_name)
