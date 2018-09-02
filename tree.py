@@ -1,14 +1,15 @@
 class Node:
     
     def __init__(self, value, sons, parent=None, prob=100.0, \
-        treshold_name=None, treshold_value=None, stats={}):
+        treshold_name=None, treshold_value=None, approx_value=None, errors=0):
         self.__value = value
         self.__sons = sons
         self.__parent = parent
         self.__prob = prob
         self.__treshold_name = treshold_name
         self.__treshold_value = treshold_value
-        self.__stats = stats
+        self.__approx_value = approx_value
+        self.__errors = errors
 
     def set_value(self, value):
         self.__value = value
@@ -28,8 +29,11 @@ class Node:
     def set_treshold_value(self, value):
         self.__treshold_value = value
 
-    def set_stats(self, stats):
-        self.__stats = stats
+    def set_approx_value(self, approx_value):
+        self.__approx_value = approx_value
+
+    def add_errors(self):
+        self.__errors += 1
 
     def get_value(self):
         return self.__value
@@ -49,8 +53,11 @@ class Node:
     def get_treshold_value(self):
         return self.__treshold_value
 
-    def get_stats(self):
-        return self.__stats
+    def get_approx_value(self):
+        return self.__approx_value
+
+    def get_errors(self):
+        return self.__errors
 
     def __str__(self):
         str = ""
@@ -62,6 +69,7 @@ class Node:
         else:
             str += self.__value
         return "[value: {}, sons: {}, parent: {}, prob: {}, \
-            treshold_name: {}, treshold_value: {}, stats: {}]".format(str, \
-            self.__sons, self.__prob, self.__treshold_name, self.__stats, \
-            self.__treshold_name)
+            treshold_name: {}, treshold_value: {}, approx_value: {}, \
+            errors: {}]".format(str, self.__sons, self.__prob, \
+            self.__treshold_name, self.__approx_value, self.__treshold_name, \
+            self.__errors)

@@ -53,7 +53,7 @@ def get_entropy(vec):
             return numpy.around(_res.astype(numpy.double), decimals=3)
 
     if numpy.sum(vec) != 1.0:
-       vec = vec / numpy.sum(vec) 
+       vec = vec / numpy.sum(vec)
 
     func = numpy.frompyfunc(partial, 1, 1)
 
@@ -79,8 +79,8 @@ def shuffle_and_split_dataset(dataset):
         random.shuffle(dataset)
 
         items = len(dataset)
-        training = round(items * 0.80) 
-        test = items - training 
+        training = round(items * 0.80)
+        test = items - training
 
         tr_set = dataset[:training]
         te_set = dataset[training:]
@@ -93,7 +93,7 @@ def shuffle_and_split_dataset(dataset):
             from one of the sets! Perform a new splitting!")
             split_ok = True
 
-    return tr_set, te_set 
+    return tr_set, te_set
 
 def take_count(dict, elem):
     if elem in dict:
@@ -106,7 +106,7 @@ def accumulate(dict, couple):
     if couple[0] in dict:
         dict[couple[0]] += couple[1]
     else:
-        dict[couple[0]] = couple[1] 
+        dict[couple[0]] = couple[1]
     return dict
 
 def get_greater(dict):
@@ -152,15 +152,16 @@ def get_best_mean_point(entropy, att_res_lst):
     return max(attr_gain_lst, key=operator.itemgetter(1))
 
 def id3(matrix, result, attr_lst):
-    results = functools.reduce(take_count, result, {})
     # check if all outcomes are equal, if this is the case set this as Node
     # value and return
     if len(set(result)) == 1:
-        return tree.Node(set(result).pop(), [], stats=results)
+        value = set(result).pop()
+        return tree.Node(value, [], prob=100.0, approx_value=value)
     # check if at least one column is present in the matrix, if this is not
     # the case it means that the value for the node to return have to be set
     # to the most likely one
     else:
+        results = functools.reduce(take_count, result, {})
         entropy = get_entropy([v for _, v in results.items()])
         attr = []
         for j in range(matrix.shape[1]):
@@ -177,7 +178,7 @@ def id3(matrix, result, attr_lst):
             root = tree.Node(lambda x: x[best_point[0]] < best_point[1], [])
             root.set_treshold_name(attr_lst[best_point[0]])
             root.set_treshold_value(best_point[1])
-            root.set_stats(results)
+            root.set_approx_value(get_greater(results))
             
             j = best_point[0]
             left_mat, left_res = [], []
@@ -185,13 +186,13 @@ def id3(matrix, result, attr_lst):
             for i in range(matrix.shape[0]):
                 if matrix[i,j] < best_point[1]:
                     left_mat.append(i)
-                    left_res.append(result[i]) 
+                    left_res.append(result[i])
                 else:
                     right_mat.append(i)
                     right_res.append(result[i])
 
             if len(left_mat) == 0 or len(right_mat) == 0:
-                split_ok = False 
+                split_ok = False
                 del attr[attr.index(best_point)]
             else:
                 split_ok = True
