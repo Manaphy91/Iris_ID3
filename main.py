@@ -4,7 +4,7 @@ import id3lib as id3
 import numpy as np
 import graph as gv
 import performances as perf
-import naive_pruning as prune
+import reduced_error_pruning as rep
 
 ATTRIBUTES = ('Sepal length', 'Sepal width', 'Petal length', 'Petal width')
 
@@ -34,7 +34,7 @@ conf_mat_1 = perf.calculate_confusion_matrix(tree, te_mat, te_res, RESULTS)
 
 print("original accuracy: {}".format(perf.get_accuracy(conf_mat_1)))
 
-prune.prune_tree(tree, te_mat, te_res, RESULTS)
+rep.prune(tree, te_mat, te_res)
 
 gv.create_graph(tree, 'ID3 Decision Tree - Pruned')
 
