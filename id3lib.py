@@ -92,9 +92,9 @@ def shuffle_and_split_dataset(dataset):
 
         if result_column == set(get_results(tr_set)) and \
             result_column == set(get_results(te_set)):
-            print("Splitting performed not balanced: some outcomes are missing \
-            from one of the sets! Perform a new splitting!")
             split_ok = True
+        print("Splitting performed not balanced: some outcomes are missing \
+            from one of the sets! Perform a new splitting!")
 
     return tr_set, te_set
 
