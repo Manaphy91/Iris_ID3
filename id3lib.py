@@ -74,7 +74,7 @@ def shuffle_and_split_dataset(dataset):
     '''
     split_ok = False
 
-    SEED = 43
+    SEED = 53
     random.seed(SEED)
 
     while not split_ok:
@@ -93,8 +93,8 @@ def shuffle_and_split_dataset(dataset):
         if result_column == set(get_results(tr_set)) and \
             result_column == set(get_results(te_set)):
             split_ok = True
-        print("Splitting performed not balanced: some outcomes are missing \
-            from one of the sets! Perform a new splitting!")
+        print("Splitting performed not balanced: some outcomes are missing " + \
+            "from one of the sets! Perform a new splitting!")
 
     return tr_set, te_set
 
