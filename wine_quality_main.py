@@ -10,10 +10,12 @@ from sklearn.metrics import classification_report
 from tqdm import tqdm
 
 
-ATTRIBUTES = tuple(map(lambda x: "point#{}".format(x), range(0, 256))) 
+ATTRIBUTES = tuple(["fixed acidity", "volatile acidity", "citric acid", "residual sugar", \
+    "chlorides", "free sulfur dioxide", "total sulfur dioxide", "density", "pH", \
+    "sulphates", "alcohol"])
 
 if __name__ == "__main__":
-    dataset = id3.read_dataset_from_csv("semeion.data")
+    dataset = id3.read_dataset_from_csv("winequality-red.csv", delimiter=';')
 
     RESULTS = tuple(set(id3.get_results(dataset)))
     
@@ -42,7 +44,7 @@ if __name__ == "__main__":
         pbar.update(1)
     pbar.close()
 
-    gv.create_graph(tree, 'ID3 Digits Decision Tree')
+    gv.create_graph(tree, 'ID3 Wine quality Decision Tree')
 
     conf_mat_tr = perf.calculate_confusion_matrix(tree, tr_mat, tr_res, RESULTS)
     conf_mat_te = perf.calculate_confusion_matrix(tree, te_mat, te_res, RESULTS)
@@ -69,7 +71,7 @@ if __name__ == "__main__":
         pbar.update(1)
     pbar.close()
 
-    gv.create_graph(tree, 'ID3 Digits Decision Tree - Pruned')
+    gv.create_graph(tree, 'ID3 Wine quality Decision Tree - Pruned')
 
     conf_mat_tr = perf.calculate_confusion_matrix(tree, tr_mat, tr_res, RESULTS)
     conf_mat_te = perf.calculate_confusion_matrix(tree, te_mat, te_res, RESULTS)
