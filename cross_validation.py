@@ -3,7 +3,7 @@ import id3lib as id3
 import performances as perf
 import reduced_error_pruning as rep
 
-def get_confusion_matrix(tr_mat, tr_res, results, attributes, prune=False, folds=10):
+def get_accuracy(tr_mat, tr_res, results, attributes, prune=False, folds=10):
 
     dataset_len = len(tr_res)
     fl = round(dataset_len / folds)
@@ -29,7 +29,10 @@ def get_confusion_matrix(tr_mat, tr_res, results, attributes, prune=False, folds
         if prune:
             rep.prune(tree, test_mat, test_res)
 
+        # calculate confusion matrix for current tree and testing data provided
         conf_mat = perf.calculate_confusion_matrix(tree, test_mat, test_res, results)
+        # sum out the accuracy obtained from the conf mat calculated
         accuracy += perf.get_accuracy(conf_mat)
 
-    return accuracy / folds
+    # return average accuracy 
+    return round(accuracy / folds, 3)
