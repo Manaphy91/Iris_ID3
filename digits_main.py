@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     tree = id3.id3(tr_mat, tr_res, ATTRIBUTES)
 
-    #kaccuracy = kfold.get_confusion_matrix(tr_mat, tr_res, RESULTS, ATTRIBUTES)
+    kaccuracy = kfold.get_accuracy(tr_mat, tr_res, RESULTS, ATTRIBUTES)
 
     predicted = []
     pbar = tqdm(total=len(te_mat), desc='', leave=False)
@@ -48,7 +48,7 @@ if __name__ == "__main__":
     conf_mat_te = perf.calculate_confusion_matrix(tree, te_mat, te_res, RESULTS)
 
     print("------------Original tree------------")
-    #print("KFold Cross Validation Accuracy: {}".format(kaccuracy))
+    print("KFold Cross Validation Accuracy on training set: {}".format(kaccuracy))
     print("Accuracy on training set: {}".format(perf.get_accuracy(conf_mat_tr)))
     print("Accuracy on testing set: {}".format(perf.get_accuracy(conf_mat_te)))
     print("Classification report:\n")
@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     rep.prune(tree, te_mat, te_res)
 
-    #kaccuracy = kfold.get_confusion_matrix(tr_mat, tr_res, RESULTS, ATTRIBUTES, prune=True)
+    kaccuracy = kfold.get_accuracy(tr_mat, tr_res, RESULTS, ATTRIBUTES, prune=True)
 
     predicted = []
     pbar = tqdm(total=len(te_mat), desc='', leave=False)
@@ -75,7 +75,7 @@ if __name__ == "__main__":
     conf_mat_te = perf.calculate_confusion_matrix(tree, te_mat, te_res, RESULTS)
 
     print("------------Pruned tree------------")
-    #print("KFold Cross Validation Accuracy: {}".format(kaccuracy))
+    print("KFold Cross Validation Accuracy on training set: {}".format(kaccuracy))
     print("Accuracy on training set: {}".format(perf.get_accuracy(conf_mat_tr)))
     print("Accuracy on testing set: {}".format(perf.get_accuracy(conf_mat_te)))
     print("Classification report:\n")
